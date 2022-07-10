@@ -1,0 +1,43 @@
+<!-- TODO: ADD IN NEW EVENT FORM AND POST TO /EVENTS-->
+
+<a href="/"> ← Back to Home</a>
+
+<div class="row">
+    <div class="col-sm-4 offset-sm-4">
+        <form action="#" id="new-event">
+            <legend>New Event</legend>
+
+            <div class="mb-3 form-group">
+                <label for="event-title" class="form-label">Title</label>
+                <input type="text" name="title" class="form-control" id="event-title" placeholder="Title" required>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="event-description" class="form-label">Event Description</label>
+                <input type="text" name="description" class="form-control" id="event-decsription" placeholder="Description" required>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="event-start-time" class="form-label">Start Time</label>
+                {{!-- TODO: Add placeholder for current time --}}
+                <input type="datetime-local" name="startTime" class="form-control" id="event-start-time" required>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="event-end-time" class="form-label">End Time</label>
+                {{!-- TODO: Add placeholder for current time --}}
+                <input type="datetime-local" name="endTime" class="form-control" id="event-end-time" required>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="event-location" class="form-label">Location</label>
+                <input name="location" type="text" class="form-control" id="event-location" placeholder="Address" required>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="event-photo" class="form-label">Photo</label>
+                <input name="photo" type="file" class="form-control" id="event-photo">
+            </div>
+
+            <div class="text-right">
+                <button type="submit" class="btn btn-primary">Create Event</button>
+            </div>
+
+        </form>
+    </div>
+</div>
