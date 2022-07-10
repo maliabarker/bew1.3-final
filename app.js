@@ -25,10 +25,29 @@ require('./data/db');
 const checkAuth = require('./middleware/checkAuth');
 app.use(checkAuth);
 
-app.get('/', (req, res) => {
-    res.render('home');
-})
+// require controller routes 
+require('./controllers/auth.js')(app)
+require('./controllers/events.js')(app)
+require('./controllers/calendars.js')(app)
 
 app.listen(3000);
 
 module.exports = app;
+ 
+/*
+MVP:
+- CRUD event
+- add event to favorites
+- add event to attending
+- add attending events to calendar ?
+- create profile
+- CRUD friends
+- set privacy modes on viewing profiles
+*/
+
+/* 
+EXTRA:
+- add google map api? or something for location
+- add the event cart to plan a day
+- calendar
+*/

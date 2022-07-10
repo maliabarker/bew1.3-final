@@ -1,0 +1,21 @@
+<!-- views/sign-up.handlebars -->
+<a href="/"> ← Back to Home</a>
+
+<div class="row">
+    <div class="col-sm-4 offset-sm-4">
+        <form action="/sign-up" method="post">
+            <legend>Sign Up</legend>
+            <div class="mb-3 form-group">
+                <label for="signup-username" class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" id="signup-username" placeholder="Username">
+            </div>
+            <div class="mb-3 form-group">
+                <label for="signup-password" class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" id="signup-password" placeholder="Password">
+            </div>
+            <div class="d-flex">
+                <button type="submit" class="btn btn-primary ms-auto">Create Account</button>
+            </div>
+        </form>
+    </div>
+</div>
