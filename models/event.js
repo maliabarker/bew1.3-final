@@ -9,7 +9,7 @@ const eventSchema = new Schema({
     location:    { type: String, required: true },
     attending:   [{ type: Schema.Types.ObjectId, ref: 'User' }],
 	favorited :  [{ type: Schema.Types.ObjectId, ref: 'User' }],
-	photoUrl :   { type: String },
+	photoUrl :   { type: String, required: true },
     createdBy:   { type: Schema.Types.ObjectId, ref: 'User', required: true }
 }, { timestamps: true });
 

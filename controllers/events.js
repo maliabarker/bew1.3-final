@@ -5,6 +5,7 @@ const Event = require('../models/event')
 const multer  = require('multer');
 const upload = multer({ dest: 'uploads/' });
 const Upload = require('s3-uploader');
+const { redis } = require('googleapis/build/src/apis/redis');
 
 const client = new Upload(process.env.S3_BUCKET, {
   aws: {
@@ -30,15 +31,36 @@ const client = new Upload(process.env.S3_BUCKET, {
 });
 
 module.exports = function(app) {
+
     // home page
     app.get('/', async (req, res) => {
-        try {
-            const currentUser = await req.user;
-            // console.log(currentUser);
-            return res.render('home', { currentUser });
-
-        } catch (err) {
-            console.log(err.message);
+        if (req.user) {
+            try {
+                const currentUser = await req.user;
+                const userId = req.user._id;
+                User.findById(userId).then((user) => {
+                    onFeed = user.friends
+                    onFeed.push(user)
+                    console.log(onFeed)
+                    // TODO: populate createdBy attribute for posts
+                    Event.find({'createdBy': { $in : onFeed }}).lean().then((events) => {
+                        console.log(events)
+                        return res.render('home', { currentUser, user, events });
+                    }).catch((err) => {
+                        console.log(err.message);
+                    });
+                }).catch((err) => {
+                    console.log(err.message);
+                });
+            } catch (err) {
+                console.log(err.message);
+            };
+        } else {
+            try { 
+                return res.render('home');
+            } catch (err) {
+                console.log(err.message);
+            };
         };
     });
 
@@ -100,7 +122,7 @@ module.exports = function(app) {
     // view individual event
     app.get('/events/:id', (req, res) => {
         Event.findById(req.params.id).exec((err, event) => {
-            console.log(event)
+            // console.log(event)
             res.render('events-show', { event: event });
         });
     });

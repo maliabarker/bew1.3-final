@@ -7,7 +7,10 @@ const app = express();
 
 var exphbs = require('express-handlebars');
 
-app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
+// exphbs.registerHelper('dateFormat', require('handlebars-dateformat'));
+
+app.engine('handlebars', exphbs.engine({defaultLayout: 'main', 
+                                        helpers: require('./public/js/helpers')}));
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
