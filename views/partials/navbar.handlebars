@@ -30,17 +30,16 @@
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                 </li>
             </ul>
-            <form class="d-flex me-lg-auto">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            
+            <form class="d-flex me-lg-auto" action="/search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name='term'>
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
+
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 {{#if currentUser}}
                     <li class="nav-item">
-                        <a class="nav-link" href="/events/new">Create Event</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
+                        <a class="btn btn-success me-2" href="/events/new">Create Event</a>
                     </li>
                     <li>
                         <div class="btn-group">
@@ -52,7 +51,7 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-start dropdown-menu-sm-end">
                                 <li><button class="dropdown-item" type="button"><a href="/users/{{currentUser.username}}">Your Profile</a></button></li>
-                                <li><button class="dropdown-item" type="button">Another action</button></li>
+                                <li><button class="dropdown-item" type="button"><a href="/logout">Logout</a></button></li>
                                 <li><button class="dropdown-item" type="button">Something else here</button></li>
                             </ul>
                         </div>

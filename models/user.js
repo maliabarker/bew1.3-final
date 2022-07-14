@@ -1,6 +1,13 @@
 // models/user.js
 
 const { Schema, model } = require('mongoose');
+
+const mongoosePaginate = require('mongoose-paginate');
+
+mongoosePaginate.paginate.options = {
+  limit: 3 // how many records on each page
+};
+
 const bcrypt = require('bcryptjs');
 
 const userSchema = new Schema({
@@ -28,11 +35,19 @@ userSchema.pre('save', function (next) {
     });
 });
   
-    // Need to use function to enable this.password to work.
-    userSchema.methods.comparePassword = function (password, done) {
-        bcrypt.compare(password, this.password, (err, isMatch) => {
-            done(err, isMatch);
-        });
-    };
+// Need to use function to enable this.password to work.
+userSchema.methods.comparePassword = function (password, done) {
+    bcrypt.compare(password, this.password, (err, isMatch) => {
+        done(err, isMatch);
+    });
+};
 
-    module.exports = model('User', userSchema);
+userSchema.plugin(mongoosePaginate);
+
+// // with weights
+// userSchema.index(
+//     { username: 'text', eventsAttending: 'text', eventsFavorited: 'text' }, 
+//     { name: 'My text index', weights: {username: 10, eventsAttending: 2, eventsFavorited: 1}}
+// );
+
+module.exports = model('User', userSchema);

@@ -20,6 +20,8 @@ app.use(cookieParser());
 
 // public folder (static and ajax)
 app.use(express.static('public'));
+app.use(express.static("public/css"))
+app.use(express.static("public/images"))
 
 // Set db
 require('./data/db');
@@ -32,6 +34,7 @@ app.use(checkAuth);
 require('./controllers/auth.js')(app)
 require('./controllers/events.js')(app)
 require('./controllers/calendars.js')(app)
+require('./controllers/users.js')(app)
 
 app.listen(3000);
 

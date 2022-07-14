@@ -1,0 +1,56 @@
+<div class="container">
+
+    <div class="row mt-4">
+        <div class="col-sm-1 offset-sm-2">
+            <img src="/images/profile.png" alt="" class="img img-fluid">
+        </div>
+        <div class="col-sm-6">
+            <h3 class="mt-4">{{ thisUser.username }}</h3>
+        </div>
+    </div>
+
+
+
+    <div id="profile-info-container" class="mt-5">
+
+        <div class="col-sm-6 offset-sm-2">
+            {{#ifCond currentUser.id '==' thisUser.id }}
+                <p>Your Profile</p>
+                <!-- 
+                    Your Profile
+                    See your events
+                        See upcoming or current events by ascending date
+                        See past events with a separate page
+                        See friend requests
+                -->
+            {{else}}
+                <p>Not your profile</p>
+                <!-- check if they're friends -->
+                {{#if checkFriends }}
+                    <p>You're friends!</p>
+                {{else}}
+
+                    <p>Not friends :/</p>
+                    {{#if checkRequested}}
+                        <p>You've requested</p>
+                        <a href="" class="btn btn-secondary">Requested</a>
+                    {{else}}
+                        <p>Request friend</p>
+                        <a href="/users/{{ thisUser.username }}/sendRequest" class="btn btn-primary"></a>
+                    {{/if}}
+                    <!-- check if they're in the user's friend requests -->
+                {{/if}}
+                <!--
+                    Not Your Profile (viewing some else's profile)
+                    Check if this is current user's friend
+                        if it is, see events and friends
+                        if it is not, add friend request button
+                -->
+            {{/ifCond}}
+        </div>
+        <div class="col-sm-4">
+            
+        </div>
+    </div>
+
+</div>

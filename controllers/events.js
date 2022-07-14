@@ -41,10 +41,10 @@ module.exports = function(app) {
                 User.findById(userId).then((user) => {
                     onFeed = user.friends
                     onFeed.push(user)
-                    console.log(onFeed)
+                    // console.log(onFeed)
                     // TODO: populate createdBy attribute for posts
                     Event.find({'createdBy': { $in : onFeed }}).lean().then((events) => {
-                        console.log(events)
+                        // console.log(events)
                         return res.render('home', { currentUser, user, events });
                     }).catch((err) => {
                         console.log(err.message);
@@ -127,11 +127,37 @@ module.exports = function(app) {
         });
     });
 
-    // index events
-
     // edit event
 
     // delete event
+
+    // SEARCH
+    app.get('/search', function (req, res) {
+        term = new RegExp(req.query.term, 'i')
+
+        User.find({'username': term}).lean().exec((err, users) => {
+            console.log(users)
+            res.render('search', { searchTerm : req.query.term, users });   
+        });
+
+        // User.find(
+        //         { $text : { $search : req.query.term } },
+        //         { score : { $meta: "textScore" } }
+        //     )
+        //     .sort({ score : { $meta : 'textScore' } })
+        //     .limit(20)
+        //     .exec(function(err, users) {
+        //         if (err) { return res.status(400).send(err.message) }
+        //         console.log(users)
+        //         if (req.header('Content-Type') == 'application/json') {
+        //             console.log('success')
+        //             return res.json({ users: users });
+        //         } else {
+        //             console.log('no success')
+        //             return res.redirect('/');
+        //         };
+        //     });
+    });
 
 
 }

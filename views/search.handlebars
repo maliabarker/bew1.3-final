@@ -1,0 +1,19 @@
+<small>Showing results for {{ searchTerm }}</small>
+<div class="container">
+
+    {{#each users}}
+        <div class="col-sm-6 offset-sm-4">
+            <div id="user-card" class="mt-5">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <img src="/images/profile.png" alt="" class="img img-fluid">
+                    </div>
+                    <div class="col-sm-10 mt-2">
+                        <h5>@{{ this.username }}</h5>
+                        <a href="/users/{{ this.username }}" class="btn btn-primary me-auto">View Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>
