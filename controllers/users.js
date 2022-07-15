@@ -29,10 +29,12 @@ module.exports = function(app) {
     app.get('/users/:username', (req, res) => {
         if (req.user) {
             const currentUser = req.user
-            User.findOne({ 'username': req.params.username }).lean().then((thisUser) => {
+            User.findOne({ 'username': req.params.username }).populate('eventsAttending').populate('eventsFavorited').lean().then((thisUser) => {
                 var checkFriends = checkIfFriends(currentUser, thisUser);
                 var checkRequested = checkIfRequested(currentUser, thisUser);
-                res.render('profile', { currentUser, thisUser, checkFriends, checkRequested });
+                Event.find({'createdBy': thisUser._id}).lean().then((createdEvents) => {
+                    res.render('profile', { currentUser, thisUser, checkFriends, checkRequested, createdEvents });
+                });
             });
         } else {
             res.render('error', { errorMsg: 'You need to log in to see this' })

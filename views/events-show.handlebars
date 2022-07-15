@@ -4,8 +4,13 @@
     <small>Created by <a href="/users/{{event.createdBy.username}}">{{event.createdBy.username}}</a></small>
     <br>
     <img src="{{event.photoUrl}}-standard." alt="">
+    <br>
+    {{#ifCond currentUser._id '==' event.createdBy._id}}
+        <a href="/events/{{ event._id }}/edit" class="btn btn-success mt-2">Edit Event</a>
+        <a href="/events/{{ event._id }}/delete" class="btn btn-danger mt-2">Delete Event</a>
+    {{/ifCond}}
     <p class="mt-4">{{ event.description }}</p>
-    <p class="mt-4"><b>When: </b>{{ event.startTime }} to {{ event.endTime }}</p>
+    <p class="mt-4"><b>When: </b>{{ dateFormat event.startTime "dddd, MMMM Do YYYY, h:mm a z" }} to {{ dateFormat event.endTime "dddd, MMMM Do YYYY, h:mm a z" }}</p>
     <p class="mt-4"><b>Where: </b>{{ event.location }}</p>
     <hr>
     <div class="row mt-4">

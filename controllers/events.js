@@ -142,8 +142,40 @@ module.exports = function(app) {
     });
 
     // edit event
+    app.get('/events/:id/edit', (req, res) => {
+        if(req.user){
+            const currentUser = req.user;
+            Event.findById(req.params.id).lean().then((event) => {
+                res.render('events-edit', {event, currentUser});
+            });
+        } else {
+            res.render('error', errorMsg='You need to be logged in to see this');
+        };
+    });
+
+    app.post('/events/:id/edit', (req, res) => {
+        if(req.user){
+            const currentUser = req.user;
+        }else{
+            res.render('error', errorMsg='You need to be logged in to see this');
+        }
+    });
 
     // delete event
+    app.get('/events/:id/delete', (req, res) => {
+        if (req.user){
+            const currentUser = req.user;
+            Event.findById(req.params.id).then((event) => {
+                if(event.createdBy == currentUser._id){
+                    console.log(event)
+                    event.remove()
+                    res.redirect(`/`)
+                };
+            });
+        } else {
+            res.render('error', errorMsg='You need to be logged in to see this');
+        }
+    })
 
     // add attending
     app.get('/events/:eventId/add-attending/:username', (req, res) => {

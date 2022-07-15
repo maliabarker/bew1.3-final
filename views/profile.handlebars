@@ -1,41 +1,88 @@
 <div class="container">
 
     {{> user-card user=thisUser}}
-
+    <hr>
     <div id="profile-info-container" class="mt-5">
+        {{#ifCond currentUser._id '==' thisUser._id }}
+            <div class="row text-center">
+                <div class="col-sm-4">
+                    <!-- TODO: use events list as partial -->
+                    <ul class="list-group-flush">
+                        <p><i>Your Events</i></p>
+                        {{#each createdEvents}}
+                            <li class="list-group-item">
+                                <small>{{ dateFormat this.startDate 'ddd, MMM D' }}: </small>
+                                <a href="/events/{{ this._id }}">{{ this.title }}</a>
+                                <br>
+                                <small> • {{ this.attending.length }} Attending</small>
+                                <small> • {{ this.favorited.length }} Favorited</small>
+                            </li>
+                        {{/each}}
+                    </ul>
+                    
+                </div>
+                <div class="col-sm-4">
+                    <ul class="list-group-flush">
+                        <p><i>Events Attending</i></p>
+                        {{#each thisUser.eventsAttending}}
+                            <li class="list-group-item">
+                                <small>{{ dateFormat this.startDate 'ddd, MMM D' }}: </small>
+                                <a href="/events/{{ this._id }}">{{ this.title }}</a>
+                                <br>
+                                <small> • {{ this.attending.length }} Attending</small>
+                                <small> • {{ this.favorited.length }} Favorited</small>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <div class="col-sm-4">
+                    <ul class="list-group-flush">
+                        <p><i>Events Favorited</i></p>
+                        {{#each thisUser.eventsFavorited}}
+                            <li class="list-group-item">
+                                <small>{{ dateFormat this.startDate 'ddd, MMM D' }}: </small>
+                                <a href="/events/{{ this._id }}">{{ this.title }}</a>
+                                <br>
+                                <small> • {{ this.attending.length }} Attending</small>
+                                <small> • {{ this.favorited.length }} Favorited</small>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 
+                Your Profile
+                See your events
+                    See upcoming or current events by ascending date
+                    See past events with a separate page
+                    See friend requests
+            -->
+        {{else}}
+            {{!-- Not your profile --}}
+
+            <!-- check if they're friends -->
+            {{#if checkFriends }}
+                <p>You're friends!</p>
+            {{else}}
+                <!-- check if they're in the user's friend requests -->
+                {{#if checkRequested}}
+                    <p class="btn btn-secondary">Requested</p>
+                {{else}}
+                    <a href="/users/{{ thisUser.username }}/send-request" class="btn btn-primary">Request</a>
+                {{/if}}
+                
+            {{/if}}
+            <!--
+                Not Your Profile (viewing some else's profile)
+                Check if this is current user's friend
+                    if it is, see events and friends
+                    if it is not, add friend request button
+            -->
+        {{/ifCond}}
 
         <div class="col-sm-6 offset-sm-2">
-            {{#ifCond currentUser._id '==' thisUser._id }}
-                <p>Your Profile</p>
-                <!-- 
-                    Your Profile
-                    See your events
-                        See upcoming or current events by ascending date
-                        See past events with a separate page
-                        See friend requests
-                -->
-            {{else}}
-                {{!-- Not your profile --}}
-
-                <!-- check if they're friends -->
-                {{#if checkFriends }}
-                    <p>You're friends!</p>
-                {{else}}
-                    <!-- check if they're in the user's friend requests -->
-                    {{#if checkRequested}}
-                        <p class="btn btn-secondary">Requested</p>
-                    {{else}}
-                        <a href="/users/{{ thisUser.username }}/send-request" class="btn btn-primary">Request</a>
-                    {{/if}}
-                    
-                {{/if}}
-                <!--
-                    Not Your Profile (viewing some else's profile)
-                    Check if this is current user's friend
-                        if it is, see events and friends
-                        if it is not, add friend request button
-                -->
-            {{/ifCond}}
+            
         </div>
         <div class="col-sm-4">
             
