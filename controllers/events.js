@@ -135,8 +135,8 @@ module.exports = function(app) {
     // view individual event
     app.get('/events/:id', (req, res) => {
         currentUser = req.user
-        Event.findById(req.params.id).lean().exec((err, event) => {
-            // console.log(event)
+        Event.findById(req.params.id).populate('createdBy').populate('attending').populate('favorited').lean().exec((err, event) => {
+            // console.log(event
             res.render('events-show', { event, currentUser });
         });
     });
@@ -144,6 +144,64 @@ module.exports = function(app) {
     // edit event
 
     // delete event
+
+    // add attending
+    app.get('/events/:eventId/add-attending/:username', (req, res) => {
+        if(req.user) {
+            var currentUser = req.user
+            // add event to user's attending list
+            User.findOneAndUpdate(
+                { username: req.params.username },
+                { $push: { eventsAttending : req.params.eventId  } },
+                function (error, success) {
+                    if (error) {
+                        console.log(error);
+                    }
+            })
+            // add user to attending
+            Event.findOneAndUpdate(
+                { _id: req.params.eventId },
+                { $push: { attending : currentUser._id  } },
+                function (error, success) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        res.redirect(`/events/${req.params.eventId}`)
+                    }
+            })
+        } else {
+            res.redirect('error', errorMsg='You need to be logged in to see this')
+        }
+    })
+
+    // add favorited
+    app.get('/events/:eventId/add-favorite/:username', (req, res) => {
+        if (req.user){
+            var currentUser = req.user
+            // add event to user's favorite list
+            User.findOneAndUpdate(
+                { username: req.params.username },
+                { $push: { eventsFavorited : req.params.eventId  } },
+                function (error, success) {
+                    if (error) {
+                        console.log(error);
+                    }
+            });
+            // add user to favorited
+            Event.findOneAndUpdate(
+                { _id: req.params.eventId },
+                { $push: { favorited : currentUser._id  } },
+                function (error, success) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        res.redirect(`/events/${req.params.eventId}`)
+                    }
+            });
+        } else {
+            res.redirect('error', errorMsg='You need to be logged in to see this')
+        }
+    });
 
     // SEARCH
     app.get('/search', function (req, res) {

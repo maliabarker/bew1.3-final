@@ -1,1 +1,35 @@
-<h1>{{ event.title }}</h1>
+
+<div class="container text-center">
+    <h1>{{ event.title }}</h1>
+    <small>Created by <a href="/users/{{event.createdBy.username}}">{{event.createdBy.username}}</a></small>
+    <br>
+    <img src="{{event.photoUrl}}-standard." alt="">
+    <p class="mt-4">{{ event.description }}</p>
+    <p class="mt-4"><b>When: </b>{{ event.startTime }} to {{ event.endTime }}</p>
+    <p class="mt-4"><b>Where: </b>{{ event.location }}</p>
+    <hr>
+    <div class="row mt-4">
+        <div class="col-sm-6">
+            <ul class="list-group-flush">
+                <a href="/events/{{ event._id }}/add-attending/{{ currentUser.username }}" class="btn btn-primary mb-2">Attend this Event</a>
+                <p>Attending</p>
+                {{#each event.attending}}
+                    <li class="list-group-item">
+                        <a href="/users/{{this.username}}">{{this.username}}</a>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="col-sm-6">
+            <ul class="list-group-flush">
+                <a href="/events/{{ event._id }}/add-favorite/{{ currentUser.username }}" class="btn btn-primary mb-2">Favorite this Event</a>
+                <p>Favorited</p>
+                {{#each event.favorited}}
+                    <li class="list-group-item">
+                        <a href="/users/{{this.username}}">{{this.username}}</a>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>
