@@ -30,6 +30,19 @@ const client = new Upload(process.env.S3_BUCKET, {
   }]
 });
 
+
+function clearDb() {
+    User.deleteMany({}).then(function(){
+        console.log('deleted users')
+    })
+}
+
+function clearEvents() {
+    Event.deleteMany({}).then(function(){
+        console.log('deleted users')
+    })
+}
+
 module.exports = function(app) {
 
     // home page

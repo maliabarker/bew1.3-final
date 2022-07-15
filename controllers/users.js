@@ -1,27 +1,26 @@
+var mongoose = require('mongoose');
+
 const User = require('../models/user');
 const Event = require('../models/event')
 
+
 function checkIfFriends(currentUser, otherUser) {
     if (currentUser) {
-        if (currentUser in otherUser.friends) {
+        var isInArray = otherUser.friends.some(function (friend) {
             console.log('Friends!')
-            return true
-        } else {
-            console.log('Not friends')
-            return false
-        };
+            return friend.equals(currentUser._id);
+        });
+        return isInArray
     };
 };
 
 function checkIfRequested(currentUser, otherUser) {
     if (currentUser) {
-        if (currentUser in otherUser.friend_requests) {
+        var isInArray = otherUser.friend_requests.some(function (friend) {
             console.log('Requested!')
-            return true
-        } else {
-            console.log('Not requested')
-            return false
-        };
+            return friend.equals(currentUser._id);
+        });
+        return isInArray
     };
 }
 
@@ -33,8 +32,6 @@ module.exports = function(app) {
             User.findOne({ 'username': req.params.username }).lean().then((thisUser) => {
                 var checkFriends = checkIfFriends(currentUser, thisUser);
                 var checkRequested = checkIfRequested(currentUser, thisUser);
-                console.log(checkFriends)
-                console.log(checkRequested)
                 res.render('profile', { currentUser, thisUser, checkFriends, checkRequested });
             });
         } else {
@@ -45,10 +42,15 @@ module.exports = function(app) {
     app.get('/users/:username/sendRequest', (req, res) => {
         if (req.user) {
             const currentUser = req.user
-            User.findOne({ 'username': req.params.username }).lean().then((thisUser) => {
-                thisUser.friend_requests.push(currentUser)
-                console.log(thisUser.friend_requests)
-                res.redirect('/users/:username', {username: thisUser.username})
+            User.findOneAndUpdate(
+                { username: req.params.username }, 
+                { $push: { friend_requests: currentUser  } },
+                function (error, success) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        res.redirect(`/users/${req.params.username}`)
+                    }
             });
         } else {
             res.render('error', { errorMsg: 'You need to log in to see this' })

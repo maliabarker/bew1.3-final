@@ -14,7 +14,7 @@
     <div id="profile-info-container" class="mt-5">
 
         <div class="col-sm-6 offset-sm-2">
-            {{#ifCond currentUser.id '==' thisUser.id }}
+            {{#ifCond currentUser._id '==' thisUser._id }}
                 <p>Your Profile</p>
                 <!-- 
                     Your Profile
@@ -24,21 +24,19 @@
                         See friend requests
                 -->
             {{else}}
-                <p>Not your profile</p>
+                {{!-- Not your profile --}}
+
                 <!-- check if they're friends -->
                 {{#if checkFriends }}
                     <p>You're friends!</p>
                 {{else}}
-
-                    <p>Not friends :/</p>
-                    {{#if checkRequested}}
-                        <p>You've requested</p>
-                        <a href="" class="btn btn-secondary">Requested</a>
-                    {{else}}
-                        <p>Request friend</p>
-                        <a href="/users/{{ thisUser.username }}/sendRequest" class="btn btn-primary"></a>
-                    {{/if}}
                     <!-- check if they're in the user's friend requests -->
+                    {{#if checkRequested}}
+                        <p class="btn btn-secondary">Requested</p>
+                    {{else}}
+                        <a href="/users/{{ thisUser.username }}/sendRequest" class="btn btn-primary">Request</a>
+                    {{/if}}
+                    
                 {{/if}}
                 <!--
                     Not Your Profile (viewing some else's profile)
