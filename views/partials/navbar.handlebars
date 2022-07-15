@@ -1,8 +1,8 @@
 <!-- views/partials/navbar.handlebars -->
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light pt-2">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">ImBored</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -12,7 +12,7 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
-                <li class="nav-item">
+                {{!-- <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
                 </li>
                 <li class="nav-item dropdown">
@@ -25,12 +25,9 @@
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>   
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
+                </li> --}}
             </ul>
-            
+
             <form class="d-flex me-lg-auto" action="/search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name='term'>
                 <button class="btn btn-outline-success" type="submit">Search</button>
@@ -42,7 +39,7 @@
                         <a class="btn btn-success me-2" href="/events/new">Create Event</a>
                     </li>
                     <li>
-                        <div class="btn-group">
+                        <div class="btn-group me-4">
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -51,9 +48,18 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-start dropdown-menu-sm-end">
                                 <li><button class="dropdown-item" type="button"><a href="/users/{{currentUser.username}}">Your Profile</a></button></li>
+                                <li><button class="dropdown-item" type="button">
+                                    <a href="/users/{{ currentUser.username }}/view-requests">Friend Requests</a>
+                                    <span class="badge bg-danger">4</span>
+                                </button></li>
                                 <li><button class="dropdown-item" type="button"><a href="/logout">Logout</a></button></li>
                                 <li><button class="dropdown-item" type="button">Something else here</button></li>
                             </ul>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{ currentUser.friend_requests.length }}
+                                <span class="visually-hidden">unread messages</span>
+                            </span>
+
                         </div>
                     </li>
                 {{else}}

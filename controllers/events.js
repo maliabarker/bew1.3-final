@@ -31,7 +31,7 @@ const client = new Upload(process.env.S3_BUCKET, {
 });
 
 
-function clearDb() {
+function clearUsers() {
     User.deleteMany({}).then(function(){
         console.log('deleted users')
     })
@@ -56,7 +56,7 @@ module.exports = function(app) {
                     onFeed.push(user)
                     // console.log(onFeed)
                     // TODO: populate createdBy attribute for posts
-                    Event.find({'createdBy': { $in : onFeed }}).lean().then((events) => {
+                    Event.find({'createdBy': { $in : onFeed }}).populate('createdBy').lean().then((events) => {
                         // console.log(events)
                         return res.render('home', { currentUser, user, events });
                     }).catch((err) => {
@@ -134,9 +134,10 @@ module.exports = function(app) {
 
     // view individual event
     app.get('/events/:id', (req, res) => {
-        Event.findById(req.params.id).exec((err, event) => {
+        currentUser = req.user
+        Event.findById(req.params.id).lean().exec((err, event) => {
             // console.log(event)
-            res.render('events-show', { event: event });
+            res.render('events-show', { event, currentUser });
         });
     });
 
@@ -146,11 +147,12 @@ module.exports = function(app) {
 
     // SEARCH
     app.get('/search', function (req, res) {
+        currentUser = req.user;
         term = new RegExp(req.query.term, 'i')
 
         User.find({'username': term}).lean().exec((err, users) => {
             console.log(users)
-            res.render('search', { searchTerm : req.query.term, users });   
+            res.render('search', { searchTerm : req.query.term, users, currentUser });   
         });
 
         // User.find(

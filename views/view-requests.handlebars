@@ -1,0 +1,20 @@
+<div class="container">
+    {{> user-card user=thisUser}}
+    <hr>
+    <p class="text-center">Requests</p>
+    <div class="col-sm-12 offset-sm-1">
+        
+        {{#each thisUser.friend_requests}}
+            <div class="row">
+                <div class="col-sm-6 offset-sm-1">
+                    {{> user-card user=this}}
+                </div>
+                <div class="col-sm-2 mt-4">
+                    <a href="/users/{{ ../thisUser.username }}/accept-request/{{ this._id }}" class="btn btn-success">Accept</a>
+                    <a href="/users/{{ ../thisUser.username }}/decline-request/{{ this._id }}" class="btn btn-danger">Decline</a>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+
+</div>
